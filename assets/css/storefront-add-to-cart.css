@@ -1,0 +1,233 @@
+:root {
+    --dcui-primary: #0560FF;
+    --dcui-text-main: #3c4043;
+    --dcui-text-light: #70757a;
+    --dcui-border: #dadce0;
+    --dcui-label: #444746;
+    --dcui-bg-selected: #f0f5ff;
+    --dcui-success: #137333;
+    --dcui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.master-variation-container,
+.slave-button-container {
+    font-family: var(--dcui-font) !important;
+}
+
+.master-variation-container select,
+.master-variation-container .quantity,
+.master-variation-container .single_add_to_cart_button,
+.master-variation-container .reset_variations,
+.master-variation-container .woocommerce-variation,
+.slave-button-container .variations {
+    display: none !important;
+}
+
+.master-variation-container table.variations,
+.master-variation-container table.variations tr,
+.master-variation-container table.variations td,
+.master-variation-container table.variations th {
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.master-variation-container table.variations th.label {
+    margin: 16px 0 8px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: var(--dcui-label) !important;
+}
+
+.google-swatches-wrapper {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+}
+
+.swatch-item {
+    padding: 9px 17px !important;
+    border: 1px solid #d1d1d6 !important;
+    border-radius: 10px !important;
+    background-color: #ffffff !important;
+    color: #1c1c1e !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all .15s ease !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+    min-height: 44px !important;
+}
+
+button.swatch-item {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.swatch-item.selected,
+.swatch-item[aria-pressed="true"] {
+    background-color: var(--dcui-primary) !important;
+    border-color: var(--dcui-primary) !important;
+    color: #ffffff !important;
+}
+
+.swatch-item.disabled,
+.swatch-item[disabled] {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+}
+
+.swatch-item:focus-visible {
+    outline: 2px solid var(--dcui-primary) !important;
+    outline-offset: 2px !important;
+}
+
+.price-row-wrapper { display: flex; align-items: center; gap: 8px; }
+.regular-price-strike { text-decoration: line-through; color: #5f6368; }
+.amount { font-weight: 700; color: var(--dcui-primary); font-size: 16px; }
+.price-label-google {
+    font-weight: 700;
+    color: var(--dcui-text-light);
+    text-transform: uppercase;
+    font-size: 12px !important;
+    display: block !important;
+}
+
+.gs-price-main { display: none; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.gs-price-main.show { display: flex !important; }
+
+.google-support-text {
+    color: var(--e-global-color-text, #3c4043) !important;
+    font-size: 14px !important;
+    line-height: 1.5em !important;
+    text-align: left !important;
+    margin-top: 12px !important;
+    padding-left: 2px !important;
+}
+
+.google-sticky-bar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 999999 !important;
+    background: #ffffff !important;
+    border-top: 1px solid var(--dcui-border) !important;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08) !important;
+    padding: 12px 24px calc(12px + env(safe-area-inset-bottom)) !important;
+    display: flex !important;
+    visibility: hidden;
+    transform: translateY(110%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .3s ease-out, opacity .25s ease-out;
+}
+
+.google-sticky-bar.is-visible {
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+.google-sticky-bar-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex !important;
+    width: 100%;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 20px;
+}
+
+.google-sticky-bar .slave-button-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 18px !important;
+}
+
+.google-sticky-bar .gs-price-sticky {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+.google-sticky-bar .gs-price-sticky.show { display: flex !important; }
+
+.google-sticky-bar form.cart { display: flex !important; align-items: center !important; gap: 12px !important; margin: 0 !important; }
+
+.google-sticky-bar .single_add_to_cart_button {
+    height: 42px !important;
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
+}
+
+@media (max-width: 768px) {
+    .google-sticky-bar {
+        padding: 10px 14px calc(10px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .google-sticky-bar-inner {
+        justify-content: center !important;
+        align-items: stretch !important;
+    }
+
+    .google-sticky-bar .slave-button-container {
+        width: 100%;
+        justify-content: center;
+        align-items: stretch !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .google-sticky-bar .gs-price-sticky,
+    .google-sticky-bar .gs-price-sticky.show {
+        width: 100%;
+        display: flex !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        gap: 4px;
+    }
+
+    .google-sticky-bar .price-row-wrapper {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 4px 8px;
+    }
+
+    .google-sticky-bar .regular-price-strike {
+        font-size: 13px;
+    }
+
+    .google-sticky-bar .amount {
+        font-size: 15px;
+        line-height: 1.25;
+    }
+
+    .google-sticky-bar .price-savings-percent {
+        display: block !important;
+        flex-basis: 100%;
+        margin-left: 0 !important;
+        font-size: 12px !important;
+        line-height: 1.3;
+    }
+
+    .google-sticky-bar form.cart {
+        width: 100%;
+        justify-content: stretch !important;
+    }
+
+    .google-sticky-bar .single_add_to_cart_button {
+        width: 100% !important;
+        min-height: 44px !important;
+        white-space: normal !important;
+    }
+}

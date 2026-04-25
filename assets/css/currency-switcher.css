@@ -1,0 +1,4 @@
+.m3-currency-switcher{margin:10px 0}
+.m3-currency-switcher select{appearance:none;padding:7px 40px 7px 16px;min-width:110px;font-size:14px;font-weight:500;border:1px solid #79747E;border-radius:4px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24' fill='%2349454F'%3E%3Cpath d='M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z'/%3E%3C/svg%3E") no-repeat right 12px center / 20px;transition:border-radius .1s step-end,border-bottom .1s step-end;cursor:pointer;outline:none}
+.m3-currency-switcher select.is-open{border-radius:4px 4px 0 0;border-bottom-color:transparent;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+.m3-currency-switcher select:focus-visible{outline:2px solid #0560FF;outline-offset:2px}
