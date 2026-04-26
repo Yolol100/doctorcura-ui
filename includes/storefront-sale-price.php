@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 final class M3_Sale_Badge {
 
-    private const TEXT_DOMAIN = 'm3';
+    private const TEXT_DOMAIN = 'doctorcura-ui';
 
     /**
      * Initialiseert de hooks
@@ -115,4 +115,3 @@ function dc_show_lowest_variation_price($price, $product) {
     // Toon uitsluitend de laagste prijs
     return wc_price($min_price);
 }
-

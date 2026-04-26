@@ -1,5 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Stop emails
  */
@@ -31,7 +37,7 @@ add_action( 'woocommerce_after_shop_loop_item', 'dcura_price_note_below_button',
 
 function dcura_price_note_below_button() {
 	echo '<div class="dcura-archive-extra-info">';
-		echo '<p class="dcura-price-note">' . esc_html__( 'Alle angezeigten Preise beinhalten ein eConsult, ein ärztliches Rezept und die 24/7 klinische Unterstützung.', 'doctorcura' ) . '</p>';
+		echo '<p class="dcura-price-note">' . esc_html__( 'Alle angezeigten Preise beinhalten ein eConsult, ein ärztliches Rezept und die 24/7 klinische Unterstützung.', 'doctorcura-ui' ) . '</p>';
 	echo '</div>';
 }
 

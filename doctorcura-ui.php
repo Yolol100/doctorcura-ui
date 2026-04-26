@@ -6,6 +6,8 @@
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author: OpenAI
+ * License: GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: doctorcura-ui
  * Domain Path: /languages
  */
@@ -23,6 +25,10 @@ define('DCUI_VERSION', '1.2.3');
 
 add_action('plugins_loaded', static function (): void {
     load_plugin_textdomain('doctorcura-ui', false, dirname(plugin_basename(DCUI_FILE)) . '/languages');
+});
+
+register_deactivation_hook(DCUI_FILE, static function (): void {
+    wp_clear_scheduled_hook('m3_update_currency_rate');
 });
 
 require_once DCUI_PATH . 'includes/archive-short-description.php';

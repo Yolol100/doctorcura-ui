@@ -3,7 +3,11 @@
 /**
  * Category
  */
-if ( ! defined( 'ABSPATH' ) ) exit;
+declare(strict_types=1);
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
 
 // --- 1. STYLING: FRONT-END CSS ---
 add_action( 'wp_enqueue_scripts', 'dc_output_category_grid_css', 20 );
@@ -32,9 +36,9 @@ add_action( 'create_product_cat', 'dc_save_cat_meta' );
 
 function dc_cat_fields_html_add() {
     wp_nonce_field( 'dc_cat_meta_save', 'dc_cat_meta_nonce' );
-    echo '<div class="form-field"><label>' . esc_html__('Geschlechts-Labels', 'doctorcura') . '</label>
-    <label><input type="checkbox" name="_cat_is_for_man" value="yes"> ' . esc_html__('Symbol für Männer', 'doctorcura') . '</label><br>
-    <label><input type="checkbox" name="_cat_is_for_woman" value="yes"> ' . esc_html__('Symbol für Frauen', 'doctorcura') . '</label></div>';
+    echo '<div class="form-field"><label>' . esc_html__('Geschlechts-Labels', 'doctorcura-ui') . '</label>
+    <label><input type="checkbox" name="_cat_is_for_man" value="yes"> ' . esc_html__('Symbol für Männer', 'doctorcura-ui') . '</label><br>
+    <label><input type="checkbox" name="_cat_is_for_woman" value="yes"> ' . esc_html__('Symbol für Frauen', 'doctorcura-ui') . '</label></div>';
 }
 
 function dc_cat_fields_html_edit( $term ) {
@@ -45,25 +49,25 @@ function dc_cat_fields_html_edit( $term ) {
     wp_nonce_field( 'dc_cat_meta_save', 'dc_cat_meta_nonce' );
     ?>
     <tr class="form-field">
-        <th scope="row"><?php esc_html_e('Geschlechts-Labels', 'doctorcura'); ?></th>
+        <th scope="row"><?php esc_html_e('Geschlechts-Labels', 'doctorcura-ui'); ?></th>
         <td>
-            <label><input type="checkbox" name="_cat_is_for_man" value="yes" <?php checked($man,'yes');?>> <?php esc_html_e('Mann', 'doctorcura'); ?></label><br>
-            <label><input type="checkbox" name="_cat_is_for_woman" value="yes" <?php checked($woman,'yes');?>> <?php esc_html_e('Frau', 'doctorcura'); ?></label>
+            <label><input type="checkbox" name="_cat_is_for_man" value="yes" <?php checked($man,'yes');?>> <?php esc_html_e('Mann', 'doctorcura-ui'); ?></label><br>
+            <label><input type="checkbox" name="_cat_is_for_woman" value="yes" <?php checked($woman,'yes');?>> <?php esc_html_e('Frau', 'doctorcura-ui'); ?></label>
         </td>
     </tr>
     <tr class="form-field">
-        <th scope="row"><?php esc_html_e('Spezifische Bilder', 'doctorcura'); ?></th>
+        <th scope="row"><?php esc_html_e('Spezifische Bilder', 'doctorcura-ui'); ?></th>
         <td>
             <div style="display:flex; gap:20px;">
-                <div><strong><?php esc_html_e('Mann:', 'doctorcura'); ?></strong>
-                    <div id="m_prev" style="border:1px dashed #ccc; padding:5px;"><?php echo $img_m ? wp_get_attachment_image($img_m,[80,80]) : esc_html__('Keines', 'doctorcura');?></div>
-                    <input type="hidden" name="dc_img_id_male" id="dc_m_id" value="<?php echo $img_m;?>">
-                    <button type="button" class="dc_u button" data-t="m"><?php esc_html_e('Wählen', 'doctorcura'); ?></button>
+                <div><strong><?php esc_html_e('Mann:', 'doctorcura-ui'); ?></strong>
+                    <div id="m_prev" style="border:1px dashed #ccc; padding:5px;"><?php echo $img_m ? wp_get_attachment_image($img_m,[80,80]) : esc_html__('Keines', 'doctorcura-ui');?></div>
+                    <input type="hidden" name="dc_img_id_male" id="dc_m_id" value="<?php echo esc_attr((string) $img_m);?>">
+                    <button type="button" class="dc_u button" data-t="m"><?php esc_html_e('Wählen', 'doctorcura-ui'); ?></button>
                 </div>
-                <div><strong><?php esc_html_e('Frau:', 'doctorcura'); ?></strong>
-                    <div id="f_prev" style="border:1px dashed #ccc; padding:5px;"><?php echo $img_f ? wp_get_attachment_image($img_f,[80,80]) : esc_html__('Keines', 'doctorcura');?></div>
-                    <input type="hidden" name="dc_img_id_female" id="dc_f_id" value="<?php echo $img_f;?>">
-                    <button type="button" class="dc_u button" data-t="f"><?php esc_html_e('Wählen', 'doctorcura'); ?></button>
+                <div><strong><?php esc_html_e('Frau:', 'doctorcura-ui'); ?></strong>
+                    <div id="f_prev" style="border:1px dashed #ccc; padding:5px;"><?php echo $img_f ? wp_get_attachment_image($img_f,[80,80]) : esc_html__('Keines', 'doctorcura-ui');?></div>
+                    <input type="hidden" name="dc_img_id_female" id="dc_f_id" value="<?php echo esc_attr((string) $img_f);?>">
+                    <button type="button" class="dc_u button" data-t="f"><?php esc_html_e('Wählen', 'doctorcura-ui'); ?></button>
                 </div>
             </div>
             
@@ -73,11 +77,14 @@ function dc_cat_fields_html_edit( $term ) {
 }
 
 function dc_save_cat_meta( $term_id ) {
-    if ( !isset($_POST['dc_cat_meta_nonce']) || !wp_verify_nonce($_POST['dc_cat_meta_nonce'], 'dc_cat_meta_save') ) return;
+    if ( ! current_user_can( 'manage_product_terms' ) ) {
+        return;
+    }
+    if ( !isset($_POST['dc_cat_meta_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['dc_cat_meta_nonce'])), 'dc_cat_meta_save') ) return;
     update_term_meta( $term_id, '_cat_is_for_man', isset($_POST['_cat_is_for_man']) ? 'yes' : 'no' );
     update_term_meta( $term_id, '_cat_is_for_woman', isset($_POST['_cat_is_for_woman']) ? 'yes' : 'no' );
-    update_term_meta( $term_id, 'dc_img_id_male', sanitize_text_field($_POST['dc_img_id_male']??'') );
-    update_term_meta( $term_id, 'dc_img_id_female', sanitize_text_field($_POST['dc_img_id_female']??'') );
+    update_term_meta( $term_id, 'dc_img_id_male', isset($_POST['dc_img_id_male']) ? absint(wp_unslash((string) $_POST['dc_img_id_male'])) : 0 );
+    update_term_meta( $term_id, 'dc_img_id_female', isset($_POST['dc_img_id_female']) ? absint(wp_unslash((string) $_POST['dc_img_id_female'])) : 0 );
     delete_transient( 'dc_all_product_cats' );
 }
 
@@ -134,4 +141,3 @@ function dc_render_category_grid_shortcode() {
     </div>
     <?php return ob_get_clean();
 }
-
