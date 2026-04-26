@@ -115,7 +115,7 @@ final class WA_Category_Grid
 
         ob_start();
         ?>
-        <nav class="vca-grid-wrapper" aria-label="<?php echo esc_attr__('Produktkategorien', 'doctorcura'); ?>">
+        <nav class="vca-grid-wrapper" aria-label="<?php echo esc_attr__('Produktkategorien', 'doctorcura-ui'); ?>">
             <div class="vca-layout">
                 <?php foreach ($categories_data as $cat): ?>
                     <a href="<?php echo esc_url((string) $cat['link']); ?>" class="vca-item-link">

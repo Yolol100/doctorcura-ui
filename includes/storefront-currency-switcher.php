@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 if (!defined('ABSPATH')) { exit; }
 
 final class M3_Currency_Switcher {
@@ -14,6 +16,10 @@ final class M3_Currency_Switcher {
     private const ALLOWED_CURRENCIES = [self::BASE_CURRENCY, self::TARGET_CURRENCY];
 
     public function __construct() {
+        if (!class_exists('WooCommerce')) {
+            return;
+        }
+
         $this->register_cron();
         $this->register_hooks();
     }
@@ -44,7 +50,10 @@ final class M3_Currency_Switcher {
     }
 
     public function get_currency(): string {
-        $currency = $_COOKIE[self::COOKIE_NAME] ?? (WC()->session ? WC()->session->get(self::COOKIE_NAME) : null);
+        $cookie_currency = isset($_COOKIE[self::COOKIE_NAME]) ? sanitize_text_field(wp_unslash((string) $_COOKIE[self::COOKIE_NAME])) : null;
+        $session_currency = function_exists('WC') && WC()->session ? WC()->session->get(self::COOKIE_NAME) : null;
+        $currency = $cookie_currency ?? $session_currency;
+
         return in_array($currency, self::ALLOWED_CURRENCIES, true) ? $currency : self::BASE_CURRENCY;
     }
 
@@ -52,7 +61,7 @@ final class M3_Currency_Switcher {
         if (!in_array($currency, self::ALLOWED_CURRENCIES, true)) {
             $currency = self::BASE_CURRENCY;
         }
-        if (WC()->session) {
+        if (function_exists('WC') && WC()->session) {
             WC()->session->set(self::COOKIE_NAME, $currency);
         }
         setcookie(self::COOKIE_NAME, $currency, [
@@ -60,7 +69,7 @@ final class M3_Currency_Switcher {
             'path'     => COOKIEPATH ?: '/',
             'domain'   => COOKIE_DOMAIN ?: '',
             'secure'   => is_ssl(),
-            'httponly' => false,
+            'httponly' => true,
             'samesite' => 'Lax',
         ]);
     }
@@ -103,7 +112,7 @@ final class M3_Currency_Switcher {
     }
 
     public function filter_totals_price_html($price_html) {
-        if (!WC()->cart) {
+        if (!function_exists('WC') || !WC()->cart) {
             return $price_html;
         }
         $total = (current_filter() === 'woocommerce_cart_subtotal') ? (float) WC()->cart->get_subtotal() : (float) WC()->cart->get_total('edit');
@@ -154,7 +163,7 @@ final class M3_Currency_Switcher {
 
     public function ajax_switch_currency(): void {
         check_ajax_referer('m3_currency_nonce', 'nonce');
-        $currency = sanitize_text_field($_POST['currency'] ?? '');
+        $currency = isset($_POST['currency']) ? sanitize_text_field(wp_unslash((string) $_POST['currency'])) : '';
         if (!in_array($currency, self::ALLOWED_CURRENCIES, true)) {
             wp_send_json_error();
         }
