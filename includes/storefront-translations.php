@@ -129,10 +129,10 @@ function wa_wc_translations(): array {
 			'Register' => 'Registrieren',
 			'You will receive further instructions by email.' => 'Du erhältst weitere Anweisungen per E-Mail.',
 			'Password reset email has been sent.' => 'Die E-Mail zum Zurücksetzen des Passworts wurde gesendet.',
-			'If the email address you entered is associated with an account, you will receive a password reset link. Please check your inbox and spam or junk folder.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen des Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
+			'If the email address you entered is associated with an account, you will receive a password reset link. Please check your inbox and spam or junk folder.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen deines Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
 			'No order has been made yet.' => 'Du hast noch keine Bestellungen aufgegeben.',
-                'Ship to a different address?' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
-                'Ship to a different address' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
+			'Ship to a different address?' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
+			'Ship to a different address' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
 			'Browse products' => 'Produkte ansehen',
 			'No downloads available yet.' => 'Noch keine Downloads verfügbar.',
 			'The following addresses will be used on the checkout page by default.' => 'Die folgenden Adressen werden standardmäßig auf der Checkout-Seite verwendet.',
@@ -219,6 +219,10 @@ function wa_wc_translations(): array {
 }
 
 function wa_wc_t( string $key, string $fallback = '' ): string {
+	if ( 'de' !== dcui_current_language() ) {
+		return '' !== $fallback ? $fallback : $key;
+	}
+
 	$data = wa_wc_translations();
 	return $data['gettext'][ trim( $key ) ] ?? $fallback;
 }
@@ -228,6 +232,10 @@ function wa_wc_t( string $key, string $fallback = '' ): string {
  */
 add_filter( 'gettext', 'wa_wc_translate_strings', 20, 3 );
 function wa_wc_translate_strings( $translated, $text, $domain ) {
+	if ( 'de' !== dcui_current_language() ) {
+		return $translated;
+	}
+
 	$allowed_domains = [ 'woocommerce', 'default', 'elementor', 'header-footer-elementor', 'woo-stripe-payment' ];
 
 	if ( ! in_array( $domain, $allowed_domains, true ) ) {
@@ -246,6 +254,10 @@ function wa_wc_translate_strings( $translated, $text, $domain ) {
 
 add_filter( 'ngettext', 'wa_wc_translate_nstrings', 20, 5 );
 function wa_wc_translate_nstrings( $translated, $single, $plural, $number, $domain ) {
+	if ( 'de' !== dcui_current_language() ) {
+		return $translated;
+	}
+
 	$allowed_domains = [ 'woocommerce', 'default', 'elementor', 'header-footer-elementor', 'woo-stripe-payment' ];
 
 	if ( ! in_array( $domain, $allowed_domains, true ) ) {
@@ -268,6 +280,10 @@ function wa_wc_translate_nstrings( $translated, $single, $plural, $number, $doma
  */
 add_filter( 'woocommerce_account_menu_items', 'wa_wc_fix_account_menu_labels', 99 );
 function wa_wc_fix_account_menu_labels( $items ) {
+	if ( 'de' !== dcui_current_language() ) {
+		return $items;
+	}
+
 	$map = [
 		'dashboard'       => 'Übersicht',
 		'orders'          => 'Bestellungen',
@@ -292,6 +308,10 @@ function wa_wc_fix_account_menu_labels( $items ) {
  */
 add_filter( 'woocommerce_checkout_fields', 'wa_wc_customize_checkout_fields', 20 );
 function wa_wc_customize_checkout_fields( $fields ) {
+	if ( 'de' !== dcui_current_language() ) {
+		return $fields;
+	}
+
 	$data = wa_wc_translations();
 
 	$billing_label_map = [
@@ -346,6 +366,10 @@ function wa_wc_customize_checkout_fields( $fields ) {
 
 add_filter( 'woocommerce_coupon_code_placeholder', 'wa_wc_coupon_placeholder' );
 function wa_wc_coupon_placeholder( $placeholder ) {
+	if ( 'de' !== dcui_current_language() ) {
+		return $placeholder;
+	}
+
 	$data = wa_wc_translations();
 	return $data['field_placeholders']['coupon_code'] ?? $placeholder;
 }
@@ -386,9 +410,8 @@ function dcura_price_note_next_to_price() {
 		return;
 	}
 
-	echo '<span class="dcura-price-inline-note">' . esc_html( wa_wc_t( 'From price:', 'Ab Preis:' ) ) . '</span>';
+	echo '<span class="dcura-price-inline-note">' . esc_html( wa_wc_t( 'From price:', 'From price:' ) ) . '</span>';
 }
-
 
 add_action( 'wp_enqueue_scripts', 'dcui_translation_assets', 20 );
 function dcui_translation_assets() {
@@ -403,7 +426,7 @@ function dcui_translation_assets() {
         DCUI_VERSION
     );
 
-    if ( ! is_cart() && ! is_checkout() && ! is_account_page() ) {
+    if ( 'de' !== dcui_current_language() || ( ! is_cart() && ! is_checkout() && ! is_account_page() ) ) {
         return;
     }
 
@@ -425,7 +448,7 @@ function dcui_translation_assets() {
                 'Save changes' => 'Änderungen speichern',
                 'Pay now' => 'Jetzt bezahlen',
                 'Update totals' => 'Gesamtsumme aktualisieren',
-                'If the email address you entered is associated with an account, you will receive a password reset link. Please check your inbox and spam or junk folder.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen des Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
+                'If the email address you entered is associated with an account, you will receive a password reset link. Please check your inbox and spam or junk folder.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen deines Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
                 'No order has been made yet.' => 'Du hast noch keine Bestellungen aufgegeben.',
                 'Ship to a different address?' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
                 'Ship to a different address' => 'Lieferadresse anstelle der Rechnungsadresse verwenden',
