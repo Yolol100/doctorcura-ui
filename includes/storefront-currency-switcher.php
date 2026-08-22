@@ -158,8 +158,17 @@ final class M3_Currency_Switcher {
         return '<span class="m3-price" data-base-price="' . esc_attr($price) . '">' . $html . '</span>';
     }
 
-    public function filter_decimal_separator(): string { return ','; }
-    public function filter_thousand_separator(): string { return '.'; }
+    public function filter_decimal_separator(): string {
+        return 'en' === dcui_current_language() ? '.' : ',';
+    }
+
+    public function filter_thousand_separator(): string {
+        return match (dcui_current_language()) {
+            'en' => ',',
+            'fr' => "\u{202F}",
+            default => '.',
+        };
+    }
 
     public function ajax_switch_currency(): void {
         check_ajax_referer('m3_currency_nonce', 'nonce');
@@ -173,9 +182,14 @@ final class M3_Currency_Switcher {
 
     public function render_switcher(): string {
         $current_currency = $this->get_currency();
+        $label = dcui_text([
+            'de' => 'Währung auswählen',
+            'en' => 'Select currency',
+            'fr' => 'Sélectionner la devise',
+        ]);
         ob_start(); ?>
         <div class="m3-currency-switcher">
-            <select aria-label="<?php echo esc_attr__('Währung auswählen', 'doctorcura-ui'); ?>">
+            <select aria-label="<?php echo esc_attr($label); ?>">
                 <option value="CHF" <?php selected($current_currency, 'CHF'); ?>>CHF</option>
                 <option value="EUR" <?php selected($current_currency, 'EUR'); ?>>EUR</option>
             </select>
@@ -188,11 +202,13 @@ final class M3_Currency_Switcher {
         wp_enqueue_style('m3-currency-switcher', DCUI_URL . 'assets/css/currency-switcher.css', [], DCUI_VERSION);
         wp_enqueue_script('m3-currency-switcher', DCUI_URL . 'assets/js/currency-switcher.js', ['jquery'], DCUI_VERSION, true);
         wp_localize_script('m3-currency-switcher', 'M3Currency', [
-            'rate'     => $this->get_rate(),
-            'currency' => $this->get_currency(),
-            'ajaxUrl'  => admin_url('admin-ajax.php'),
-            'nonce'    => wp_create_nonce('m3_currency_nonce'),
-            'action'   => self::AJAX_ACTION,
+            'rate'              => $this->get_rate(),
+            'currency'          => $this->get_currency(),
+            'decimalSeparator'  => $this->filter_decimal_separator(),
+            'thousandSeparator' => $this->filter_thousand_separator(),
+            'ajaxUrl'           => admin_url('admin-ajax.php'),
+            'nonce'             => wp_create_nonce('m3_currency_nonce'),
+            'action'            => self::AJAX_ACTION,
         ]);
     }
 
