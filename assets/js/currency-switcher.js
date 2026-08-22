@@ -1,8 +1,11 @@
 (function($){
     function formatPrice(amount) {
+        var config = window.M3Currency || {};
+        var decimalSeparator = config.decimalSeparator || ',';
+        var thousandSeparator = config.thousandSeparator || '.';
         var parts = Number(amount).toFixed(2).split('.');
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        return parts.join(',');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+        return parts.join(decimalSeparator);
     }
 
     function wrapPriceHtml(symbol, displayPrice) {
