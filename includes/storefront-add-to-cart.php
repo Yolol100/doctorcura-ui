@@ -30,7 +30,11 @@ add_action('wp_enqueue_scripts', function (): void {
         'dcui-storefront-add-to-cart',
         'DCUIAddToCart',
         [
-            'saveTextTemplate' => __('Sie sparen %s%', 'doctorcura-ui'),
+            'saveTextTemplate' => dcui_text([
+                'de' => 'Sie sparen %s%',
+                'en' => 'You save %s%',
+                'fr' => 'Vous économisez %s %',
+            ]),
         ]
     );
 });
@@ -67,7 +71,11 @@ add_shortcode('product_variation_choices', function ($atts): string {
         ?>
         <?php if ($a['context'] === 'main') : ?>
             <div class="<?php echo esc_attr($priceClass); ?>">
-                <span class="price-label-google"><?php echo esc_html__('Preis', 'doctorcura-ui'); ?></span>
+                <span class="price-label-google"><?php echo esc_html(dcui_text([
+                    'de' => 'Preis',
+                    'en' => 'Price',
+                    'fr' => 'Prix',
+                ])); ?></span>
                 <div class="price-row-wrapper"></div>
             </div>
         <?php endif; ?>
@@ -88,7 +96,11 @@ add_shortcode('product_add_to_cart_button', function ($atts): string {
     <div class="custom-add-to-cart-button-only-wrapper slave-button-container">
         <?php if ($a['context'] === 'sticky') : ?>
             <div class="gs-price-sticky">
-                <span class="price-label-google"><?php echo esc_html__('Preis', 'doctorcura-ui'); ?></span>
+                <span class="price-label-google"><?php echo esc_html(dcui_text([
+                    'de' => 'Preis',
+                    'en' => 'Price',
+                    'fr' => 'Prix',
+                ])); ?></span>
                 <div class="price-row-wrapper"></div>
             </div>
         <?php endif; ?>
@@ -97,7 +109,11 @@ add_shortcode('product_add_to_cart_button', function ($atts): string {
 
         <?php if ($a['context'] === 'main') : ?>
             <div class="google-support-text">
-                <?php echo esc_html__('Alle angezeigten Preise beinhalten ein eConsult, ein ärztliches Rezept und die 24/7 klinische Unterstützung.', 'doctorcura-ui'); ?>
+                <?php echo esc_html(dcui_text([
+                    'de' => 'Alle angezeigten Preise beinhalten ein eConsult, ein ärztliches Rezept und die 24/7 klinische Unterstützung.',
+                    'en' => 'All displayed prices include an eConsult, a medical prescription and 24/7 clinical support.',
+                    'fr' => 'Tous les prix affichés incluent une eConsultation, une ordonnance médicale et une assistance clinique 24 h/24 et 7 j/7.',
+                ])); ?>
             </div>
         <?php endif; ?>
     </div>
