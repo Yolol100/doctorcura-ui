@@ -6,7 +6,7 @@ jQuery(function ($) {
     const $stickyBar = $('#googleStickyBar');
     let variationSelected = false;
     const config = window.DCUIAddToCart || {};
-    const saveTextTemplate = config.saveTextTemplate || 'Sie sparen %s%';
+    const saveTextTemplate = config.saveTextTemplate || 'Save %s%';
 
     const setScrollPadding = () => {
         const barHeight = $stickyBar.outerHeight() || 0;
@@ -28,8 +28,12 @@ jQuery(function ($) {
     };
 
     const fmt = (number) => {
-        const val = Number(number || 0).toFixed(2).replace('.', ',');
-        return `${getCurrencySymbol()} ${val}`;
+        const currency = window.M3Currency || {};
+        const decimalSeparator = currency.decimalSeparator || ',';
+        const thousandSeparator = currency.thousandSeparator || '.';
+        const parts = Number(number || 0).toFixed(2).split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+        return `${getCurrencySymbol()} ${parts.join(decimalSeparator)}`;
     };
 
     const formatSaveText = (save) => saveTextTemplate.replace('%s', String(save));
