@@ -31,6 +31,39 @@ final class MedicalAccordionHandler
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
     }
 
+    private static function frontend_label(string $key): string
+    {
+        $labels = [
+            'specs' => [
+                'de' => 'Spezifikationen',
+                'en' => 'Specifications',
+                'fr' => 'Caractéristiques',
+            ],
+            'description' => [
+                'de' => 'Beschreibung',
+                'en' => 'Description',
+                'fr' => 'Description',
+            ],
+            '_how_it_works' => [
+                'de' => 'Wirkungsweise',
+                'en' => 'How it works',
+                'fr' => 'Mode d’action',
+            ],
+            '_medical_info' => [
+                'de' => 'Medizinische Informationen',
+                'en' => 'Medical information',
+                'fr' => 'Informations médicales',
+            ],
+            '_product_faq' => [
+                'de' => 'Häufig gestellte Fragen',
+                'en' => 'Frequently asked questions',
+                'fr' => 'Questions fréquentes',
+            ],
+        ];
+
+        return \dcui_text($labels[$key] ?? []);
+    }
+
     public function add_medical_tab(array $tabs): array
     {
         $tabs['medical_content'] = [
@@ -153,12 +186,12 @@ final class MedicalAccordionHandler
         if ($attributes !== '') {
             $items[] = [
                 'id'      => 'specs',
-                'title'   => __('Spezifikationen', 'doctorcura-ui'),
+                'title'   => self::frontend_label('specs'),
                 'content' => $attributes,
             ];
         }
 
-        foreach (self::META_FIELDS as $key => $default_label) {
+        foreach (self::META_FIELDS as $key => $_default_label) {
             $content = $product->get_meta($key);
             if (!$content) {
                 continue;
@@ -167,7 +200,7 @@ final class MedicalAccordionHandler
             $custom_title = $product->get_meta($key . '_title');
             $items[] = [
                 'id'      => sanitize_title($key),
-                'title'   => $custom_title ?: __($default_label, 'doctorcura-ui'),
+                'title'   => $custom_title ?: self::frontend_label($key),
                 'content' => wc_format_content($content),
             ];
         }
@@ -180,7 +213,7 @@ final class MedicalAccordionHandler
         <div class="wa-product-content-wrapper">
             <?php if ($product->get_short_description()) : ?>
                 <div class="wa-description-section">
-                    <h3 class="wa-description-title"><?php echo esc_html__('Beschreibung', 'doctorcura-ui'); ?></h3>
+                    <h3 class="wa-description-title"><?php echo esc_html(self::frontend_label('description')); ?></h3>
                     <div class="wa-description-body">
                         <?php echo wp_kses_post(apply_filters('woocommerce_short_description', $product->get_short_description())); ?>
                     </div>
