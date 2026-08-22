@@ -113,9 +113,15 @@ final class WA_Category_Grid
 
         wp_enqueue_style('dcui-category-grid', DCUI_URL . 'assets/css/storefront-category-grid.css', [], DCUI_VERSION);
 
+        $aria_label = dcui_text([
+            'de' => 'Produktkategorien',
+            'en' => 'Product categories',
+            'fr' => 'Catégories de produits',
+        ]);
+
         ob_start();
         ?>
-        <nav class="vca-grid-wrapper" aria-label="<?php echo esc_attr__('Produktkategorien', 'doctorcura-ui'); ?>">
+        <nav class="vca-grid-wrapper" aria-label="<?php echo esc_attr($aria_label); ?>">
             <div class="vca-layout">
                 <?php foreach ($categories_data as $cat): ?>
                     <a href="<?php echo esc_url((string) $cat['link']); ?>" class="vca-item-link">
