@@ -166,7 +166,7 @@ function wa_wc_translations(): array {
 			'This product has multiple variants. The options may be chosen on the product page' => 'Dieses Produkt hat mehrere Varianten. Die Optionen können auf der Produktseite gewählt werden.',
 
 			// Checkout / betaaluitleg
-			'Click the "Google Pay" button to submit your payment information and complete your order.' => 'Klicke auf die Schaltfläche „Google Pay“, um deine Zahlungsinformationen zu übermitteln und deine Bestellung abzuschließen.',
+			'Click the "Google Pay" button to submit your payment information and complete your order.' => 'Klicke auf die Schaltfläche „Google Pay“, um deine Zahlungsinformationen zu übermitteln en deine Bestellung abzuschließen.',
 			'Click the "Apple Pay" button to submit your payment information and complete your order.' => 'Klicke auf die Schaltfläche „Apple Pay“, um deine Zahlungsinformationen zu übermitteln und deine Bestellung abzuschließen.',
 			'Click Pay with PromptPay and you will be shown a QR code.' => 'Klicke auf „Mit PromptPay bezahlen“ und dir wird ein QR-Code angezeigt.',
 			'Scan the QR code using a payment app that supports PromptPay.' => 'Scanne den QR-Code mit einer Zahlungs-App, die PromptPay unterstützt.',
@@ -410,7 +410,13 @@ function dcura_price_note_next_to_price() {
 		return;
 	}
 
-	echo '<span class="dcura-price-inline-note">' . esc_html( wa_wc_t( 'From price:', 'From price:' ) ) . '</span>';
+	$label = dcui_text( [
+		'de' => 'Ab Preis:',
+		'en' => 'From price:',
+		'fr' => 'À partir de :',
+	] );
+
+	echo '<span class="dcura-price-inline-note">' . esc_html( $label ) . '</span>';
 }
 
 add_action( 'wp_enqueue_scripts', 'dcui_translation_assets', 20 );
