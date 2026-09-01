@@ -12,7 +12,8 @@ DoctorCura UI bevat storefront-, product- en interfacecomponenten voor DoctorCur
 - currency switcher;
 - prijs-, vertaal- en accessibilitylabels;
 - storefrontafbeeldingen en sliders;
-- bestaande hooks die WordPress-adminmeldingen voor wachtwoord-, e-mail- en nieuwe-gebruikerswijzigingen onderdrukken.
+- bestaande hooks die adminmails over wachtwoordwijzigingen en nieuwe gebruikers onderdrukken;
+- een bestaand `send_email_change_email`-filter dat de beveiligingsmelding aan het vorige e-mailadres van de gebruiker onderdrukt na een account-e-mailwijziging.
 
 ## Relatie met DoctorCura Core
 
