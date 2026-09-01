@@ -11,17 +11,18 @@ DoctorCura UI bevat storefront-, product- en interfacecomponenten voor DoctorCur
 - productvariatie- en add-to-cart-interface;
 - currency switcher;
 - prijs-, vertaal- en accessibilitylabels;
-- storefrontafbeeldingen en sliders.
+- storefrontafbeeldingen en sliders;
+- bestaande hooks die WordPress-adminmeldingen voor wachtwoord-, e-mail- en nieuwe-gebruikerswijzigingen onderdrukken.
 
 ## Relatie met DoctorCura Core
 
 ```text
-DoctorCura Core → account-, checkout- en ordergedrag
-DoctorCura UI   → storefront-, product- en presentatielaag
+DoctorCura Core → primaire account-, checkout- en orderflows
+DoctorCura UI   → storefront/productpresentatie + huidige account-notificatiefilters
 WordPress + WooCommerce → gedeeld runtimeplatform
 ```
 
-De plugins hebben afzonderlijke versies en releasepakketten. UI mag geen verborgen afhankelijkheid van Core introduceren; gezamenlijke productie-uitrol vereist wel een stagingtest van de gebruikte combinatie.
+De plugins hebben afzonderlijke versies en releasepakketten. UI heeft geen harde runtimeafhankelijkheid van Core, maar beïnvloedt momenteel ook enkele accountgerelateerde adminnotificaties. Deactivatie kan dat notificatiegedrag daarom wijzigen; gezamenlijke productie-uitrol en rollback vereisen een stagingtest van de gebruikte combinatie.
 
 ## Compatibiliteit
 
