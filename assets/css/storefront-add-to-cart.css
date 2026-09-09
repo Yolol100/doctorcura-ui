@@ -1,23 +1,44 @@
 :root {
-    --dcui-primary: #0b57d0;
-    --dcui-text: #202124;
-    --dcui-text-light: #3c4043;
+    --dcui-primary: #0560FF;
+    --dcui-text-main: #3c4043;
+    --dcui-text-light: #70757a;
     --dcui-border: #dadce0;
-    --dcui-success: #188038;
+    --dcui-label: #444746;
+    --dcui-bg-selected: #f0f5ff;
+    --dcui-success: #137333;
+    --dcui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* WooCommerce must remain usable when JavaScript fails. Hide the native
- * attribute controls only after the custom variation UI has initialised. */
-html.dcui-js .master-variation-container .variations {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
+.master-variation-container,
+.slave-button-container {
+    font-family: var(--dcui-font) !important;
+}
+
+html.dcui-js .master-variation-container select,
+html.dcui-js .master-variation-container .quantity,
+html.dcui-js .master-variation-container .single_add_to_cart_button,
+html.dcui-js .master-variation-container .reset_variations,
+html.dcui-js .master-variation-container .woocommerce-variation,
+html.dcui-js .slave-button-container .variations {
+    display: none !important;
+}
+
+.master-variation-container table.variations,
+.master-variation-container table.variations tr,
+.master-variation-container table.variations td,
+.master-variation-container table.variations th {
+    display: block !important;
+    width: 100% !important;
+    border: none !important;
     padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
+    background: transparent !important;
+}
+
+.master-variation-container table.variations th.label {
+    margin: 16px 0 8px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: var(--dcui-label) !important;
 }
 
 .google-swatches-wrapper {

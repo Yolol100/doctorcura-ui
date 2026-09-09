@@ -69,7 +69,7 @@ function wa_wc_translations(): array {
 
 			'Cart' => 'Warenkorb',
 			'Shopping cart' => 'Warenkorb',
-			'Update cart' => 'Warenkorb aktualisiert',
+			'Update cart' => 'Warenkorb aktualisieren',
 			'Have a coupon?' => 'Hast du einen Gutscheincode?',
 			'Click here to enter your code' => 'Hier klicken, um deinen Code einzugeben',
 			'Payment' => 'Zahlung',

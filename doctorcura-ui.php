@@ -245,6 +245,7 @@ add_action( 'plugins_loaded', static function () use ( $dcui_this_path ): void {
         'function:dcui_translation_assets',
     ] );
 
+
     $load_module( 'includes/storefront-currency-switcher.php', [
         'class:M3_Currency_Switcher',
         'shortcode:currency_switcher',
@@ -261,7 +262,7 @@ add_action( 'plugins_loaded', static function () use ( $dcui_this_path ): void {
                 $details[] = $module . ': ' . implode( ', ', $symbols );
             }
 
-            echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'DoctorCura UI legacy-code conflict:', 'doctorcura-ui' ) . '</strong> ' . esc_html__( 'An older plugin copy, Code Snippet, MU plugin, or theme already defines DoctorCura UI code. Directly conflicting modules were skipped; partial locale conflicts loaded the missing helper safely. Disable the duplicate code. Details:', 'doctorcura-ui' ) . '</p><p><code>' . esc_html( implode( ' | ', $details ) ) . '</code></p></div>';
+            echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'DoctorCura UI legacy-code conflict:', 'doctorcura-ui' ) . '</strong> ' . esc_html__( 'Legacy DoctorCura UI symbols were detected in an older plugin copy, Code Snippet, MU plugin, or theme. Directly conflicting modules were skipped to prevent a PHP fatal; missing locale helpers were still loaded when safe. Disable the duplicate code. Details:', 'doctorcura-ui' ) . '</p><p><code>' . esc_html( implode( ' | ', $details ) ) . '</code></p></div>';
         } );
     }
 }, 20 );
