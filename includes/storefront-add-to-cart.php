@@ -126,7 +126,7 @@ add_action('wp_footer', function (): void {
         return;
     }
     ?>
-    <div class="google-sticky-bar" id="googleStickyBar" aria-hidden="true" inert>
+    <div class="google-sticky-bar" id="googleStickyBar" aria-hidden="true">
         <div class="google-sticky-bar-inner">
             <?php echo do_shortcode('[product_add_to_cart_button context="sticky"]'); ?>
         </div>

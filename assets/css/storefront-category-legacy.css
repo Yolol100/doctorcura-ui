@@ -1,0 +1,23 @@
+.dc-category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin: 20px 0;
+}
+.dc-grid-item { position: relative; text-align: center; }
+.dc-grid-link { text-decoration: none !important; display: block; }
+.dc-img-wrapper { position: relative !important; display: block; overflow: hidden; border-radius: 18px; aspect-ratio: 1 / 1; background: #f9f9f9; z-index: 1; }
+.dc-cat-img { width: 100% !important; height: 100% !important; object-fit: cover !important; transition: transform 0.5s ease; display: block; }
+.dc-grid-item:hover .dc-cat-img { transform: scale(1.1); }
+.dc-badge-container { position: absolute !important; top: 15px !important; right: 15px !important; z-index: 10 !important; display: flex !important; gap: 8px !important; pointer-events: none; }
+.dc-badge { width: 38px !important; height: 38px !important; background-color: #ffffff !important; border-radius: 50% !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 10px rgba(0,0,0,0.12) !important; line-height: 0 !important; flex-shrink: 0 !important; }
+.dc-badge svg { width: 22px !important; height: 22px !important; display: block !important; transform: translateY(-1px); }
+.dc-badge.male { color: #007aff !important; }
+.dc-badge.female { color: #e91e63 !important; }
+.dc-arrow-overlay { position: absolute !important; bottom: 15px !important; right: 15px !important; z-index: 5 !important; }
+.dc-arrow-circle { background-color: #007aff; color: #ffffff; width: 44px; height: 44px; border-radius: 50%; display: inline-flex !important; align-items: center !important; justify-content: center !important; box-shadow: 0 4px 12px rgba(0,122,255,0.3); transition: all 0.3s ease; }
+.dc-arrow-circle svg { width: 20px !important; height: 20px !important; stroke: currentColor; stroke-width: 3; fill: none; }
+.dc-grid-item:hover .dc-arrow-circle { background-color: #0056d6; transform: scale(1.1) rotate(-5deg); }
+.dc-grid-title { font-family: var(--dcui-font, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif) !important; font-weight: 700 !important; font-size: 1.15rem !important; margin: 15px 0 0 0 !important; color: #1d1d1f !important; }
+@media (min-width: 768px) and (max-width: 1024px) { .dc-category-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+@media (max-width: 767px) { .dc-category-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; } .dc-grid-title { font-size: 1rem !important; } .dc-badge { width: 32px !important; height: 32px !important; } .dc-arrow-circle { width: 32px !important; height: 32px !important; } }
