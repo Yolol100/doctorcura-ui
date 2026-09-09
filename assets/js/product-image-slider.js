@@ -23,7 +23,7 @@
                 dots.forEach(function(dot, i) {
                     var active = i === currentIndex;
                     dot.classList.toggle('is-active', active);
-                    dot.setAttribute('aria-selected', active ? 'true' : 'false');
+                    dot.setAttribute('aria-current', active ? 'true' : 'false');
                 });
             }
         }

@@ -10,13 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Centrale WooCommerce / Elementor / Stripe vertalingen
- * Best placement: Code Snippets plugin
- * Scope: frontend
+ * Centrale WooCommerce / Elementor / Stripe vertalingen.
+ * De grote map wordt één keer per request opgebouwd en daarna hergebruikt.
  */
 
 function wa_wc_translations(): array {
-	return [
+	static $translations = null;
+
+	if ( is_array( $translations ) ) {
+		return $translations;
+	}
+
+	$translations = [
 		'gettext' => [
 			// Cart / checkout / shop
 			'View cart' => 'Warenkorb ansehen',
@@ -118,12 +123,6 @@ function wa_wc_translations(): array {
 			'This key is invalid or has already been used. Please reset your password again if needed.' => 'Dieser Schlüssel ist ungültig oder wurde bereits verwendet. Bitte setze dein Passwort bei Bedarf erneut zurück.',
 			'Lost your password? Please enter your email. You will receive a link to create a new password.' => 'Passwort vergessen? Bitte gib deine E-Mail-Adresse ein. Du erhältst einen Link, um ein neues Passwort zu erstellen.',
 			'Lost your password?' => 'Passwort vergessen?',
-			'Username or email address' => 'E-Mail-Adresse',
-			'Username or email' => 'E-Mail-Adresse',
-			'Please enter your username or email address. You will receive a link to create a new password via email.' => 'Bitte gib deine E-Mail-Adresse ein. Du erhältst per E-Mail einen Link, um ein neues Passwort zu erstellen.',
-			'Enter a username or email address.' => 'Bitte gib deine E-Mail-Adresse ein.',
-			'Invalid username or email.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen deines Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
-			'There is no account with that username or email address.' => 'Wenn die eingegebene E-Mail-Adresse mit einem Konto verknüpft ist, erhältst du einen Link zum Zurücksetzen deines Passworts. Bitte prüfe deinen Posteingang sowie deinen Spam- oder Junk-Ordner.',
 			'Email' => 'E-Mail-Adresse',
 			'Required' => 'Erforderlich',
 			'Reset password' => 'Passwort zurücksetzen',
@@ -222,6 +221,8 @@ function wa_wc_translations(): array {
 			'shipping_state' => 'Option auswählen…',
 		],
 	];
+
+	return $translations;
 }
 
 function wa_wc_t( string $key, string $fallback = '' ): string {
@@ -238,7 +239,7 @@ function wa_wc_t( string $key, string $fallback = '' ): string {
  */
 add_filter( 'gettext', 'wa_wc_translate_strings', 20, 3 );
 function wa_wc_translate_strings( $translated, $text, $domain ) {
-	if ( 'de' !== dcui_current_language() ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || 'de' !== dcui_current_language() ) {
 		return $translated;
 	}
 
@@ -260,7 +261,7 @@ function wa_wc_translate_strings( $translated, $text, $domain ) {
 
 add_filter( 'ngettext', 'wa_wc_translate_nstrings', 20, 5 );
 function wa_wc_translate_nstrings( $translated, $single, $plural, $number, $domain ) {
-	if ( 'de' !== dcui_current_language() ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || 'de' !== dcui_current_language() ) {
 		return $translated;
 	}
 
@@ -427,7 +428,12 @@ function dcura_price_note_next_to_price() {
 
 add_action( 'wp_enqueue_scripts', 'dcui_translation_assets', 20 );
 function dcui_translation_assets() {
-    if ( ! function_exists( 'is_cart' ) || ! function_exists( 'is_checkout' ) || ! function_exists( 'is_account_page' ) ) {
+    if ( ! function_exists( 'is_woocommerce' ) || ! function_exists( 'is_cart' ) || ! function_exists( 'is_checkout' ) || ! function_exists( 'is_account_page' ) ) {
+        return;
+    }
+
+    $in_woocommerce_context = is_woocommerce() || is_cart() || is_checkout() || is_account_page();
+    if ( ! $in_woocommerce_context ) {
         return;
     }
 

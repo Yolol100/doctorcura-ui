@@ -1,0 +1,21 @@
+.dcui-medical-options-group {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.dcui-medical-editor-field {
+    margin: 12px;
+}
+
+.dcui-medical-editor-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+@media (min-width: 783px) {
+    .dcui-medical-editor-field {
+        margin-left: 162px;
+        margin-right: 12px;
+    }
+}

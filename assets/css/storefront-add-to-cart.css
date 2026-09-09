@@ -14,12 +14,12 @@
     font-family: var(--dcui-font) !important;
 }
 
-.master-variation-container select,
-.master-variation-container .quantity,
-.master-variation-container .single_add_to_cart_button,
-.master-variation-container .reset_variations,
-.master-variation-container .woocommerce-variation,
-.slave-button-container .variations {
+html.dcui-js .master-variation-container select,
+html.dcui-js .master-variation-container .quantity,
+html.dcui-js .master-variation-container .single_add_to_cart_button,
+html.dcui-js .master-variation-container .reset_variations,
+html.dcui-js .master-variation-container .woocommerce-variation,
+html.dcui-js .slave-button-container .variations {
     display: none !important;
 }
 
@@ -89,6 +89,7 @@ button.swatch-item {
 .price-row-wrapper { display: flex; align-items: center; gap: 8px; }
 .regular-price-strike { text-decoration: line-through; color: #5f6368; }
 .amount { font-weight: 700; color: var(--dcui-primary); font-size: 16px; }
+.price-savings-percent { font-size: 11px; color: var(--dcui-success); margin-left: 4px; }
 .price-label-google {
     font-weight: 700;
     color: var(--dcui-text-light);
