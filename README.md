@@ -31,8 +31,10 @@ De plugins hebben afzonderlijke versies en releasepakketten. UI heeft geen harde
 | --- | --- |
 | WordPress | 6.4 of nieuwer; getest tot 6.8 |
 | PHP | 8.1 of nieuwer |
-| Huidige versie | 1.2.6 |
-| Combinatie | Test UI 1.2.6 samen met Core 1.0.7 op staging voordat beide naar productie gaan |
+| Huidige versie | 1.2.7 |
+| Combinatie | Test UI 1.2.7 samen met Core 1.0.8 op staging voordat beide naar productie gaan |
+
+UI 1.2.7 voorkomt PHP-redeclarationfouten wanneer een oudere DoctorCura UI-kopie of een gemigreerde Code Snippet dezelfde functies, shortcodes of klassen al heeft geladen. De nieuwe neutrale loginlabel-filter blijft daarbij afzonderlijk beschikbaar.
 
 ## Installatie
 
