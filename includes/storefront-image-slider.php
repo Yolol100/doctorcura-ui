@@ -61,8 +61,13 @@ final class M3_Elementor_Product_Image_Slider {
             'en' => 'Image %d',
             'fr' => 'Image %d',
         ]);
+        $slider_label = dcui_text([
+            'de' => 'Produktbilder',
+            'en' => 'Product images',
+            'fr' => 'Images du produit',
+        ]);
         ob_start(); ?>
-        <div class="m3-product-slider <?php echo esc_attr($has_multiple ? '' : 'm3-single'); ?>" tabindex="0">
+        <div class="m3-product-slider <?php echo esc_attr($has_multiple ? '' : 'm3-single'); ?>" role="region" aria-label="<?php echo esc_attr($slider_label); ?>"<?php echo $has_multiple ? ' tabindex="0"' : ''; ?>>
             <div class="m3-track">
                 <?php foreach ($all_ids as $index => $id) : ?>
                     <div class="m3-slide">
@@ -73,7 +78,7 @@ final class M3_Elementor_Product_Image_Slider {
                             false,
                             [
                                 'loading' => $index === 0 ? 'eager' : 'lazy',
-                                'alt' => esc_attr(get_post_meta($id, '_wp_attachment_image_alt', true) ?: $product->get_name()),
+                                'alt' => wp_strip_all_tags((string) (get_post_meta($id, '_wp_attachment_image_alt', true) ?: $product->get_name())),
                             ]
                         );
                         ?>
@@ -83,9 +88,9 @@ final class M3_Elementor_Product_Image_Slider {
             <?php if ($has_multiple) : ?>
                 <button type="button" class="m3-arrow m3-prev" aria-label="<?php echo esc_attr($previous_label); ?>">‹</button>
                 <button type="button" class="m3-arrow m3-next" aria-label="<?php echo esc_attr($next_label); ?>">›</button>
-                <div class="m3-dots" role="tablist" aria-label="<?php echo esc_attr($navigation_label); ?>">
+                <div class="m3-dots" role="group" aria-label="<?php echo esc_attr($navigation_label); ?>">
                     <?php foreach ($all_ids as $i => $_) : ?>
-                        <button type="button" class="m3-dot <?php echo esc_attr($i === 0 ? 'is-active' : ''); ?>" role="tab" aria-selected="<?php echo esc_attr($i === 0 ? 'true' : 'false'); ?>" aria-label="<?php echo esc_attr(sprintf($image_label, $i + 1)); ?>"></button>
+                        <button type="button" class="m3-dot <?php echo esc_attr($i === 0 ? 'is-active' : ''); ?>" aria-current="<?php echo esc_attr($i === 0 ? 'true' : 'false'); ?>" aria-label="<?php echo esc_attr(sprintf($image_label, $i + 1)); ?>"></button>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>

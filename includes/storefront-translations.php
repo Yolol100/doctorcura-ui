@@ -10,13 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Centrale WooCommerce / Elementor / Stripe vertalingen
- * Best placement: Code Snippets plugin
- * Scope: frontend
+ * Centrale WooCommerce / Elementor / Stripe vertalingen.
+ * De grote map wordt één keer per request opgebouwd en daarna hergebruikt.
  */
 
 function wa_wc_translations(): array {
-	return [
+	static $translations = null;
+
+	if ( is_array( $translations ) ) {
+		return $translations;
+	}
+
+	$translations = [
 		'gettext' => [
 			// Cart / checkout / shop
 			'View cart' => 'Warenkorb ansehen',
@@ -64,7 +69,7 @@ function wa_wc_translations(): array {
 
 			'Cart' => 'Warenkorb',
 			'Shopping cart' => 'Warenkorb',
-			'Update cart' => 'Warenkorb aktualisieren',
+			'Update cart' => 'Warenkorb aktualisiert',
 			'Have a coupon?' => 'Hast du einen Gutscheincode?',
 			'Click here to enter your code' => 'Hier klicken, um deinen Code einzugeben',
 			'Payment' => 'Zahlung',
@@ -216,6 +221,8 @@ function wa_wc_translations(): array {
 			'shipping_state' => 'Option auswählen…',
 		],
 	];
+
+	return $translations;
 }
 
 function wa_wc_t( string $key, string $fallback = '' ): string {
@@ -232,7 +239,7 @@ function wa_wc_t( string $key, string $fallback = '' ): string {
  */
 add_filter( 'gettext', 'wa_wc_translate_strings', 20, 3 );
 function wa_wc_translate_strings( $translated, $text, $domain ) {
-	if ( 'de' !== dcui_current_language() ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || 'de' !== dcui_current_language() ) {
 		return $translated;
 	}
 
@@ -254,7 +261,7 @@ function wa_wc_translate_strings( $translated, $text, $domain ) {
 
 add_filter( 'ngettext', 'wa_wc_translate_nstrings', 20, 5 );
 function wa_wc_translate_nstrings( $translated, $single, $plural, $number, $domain ) {
-	if ( 'de' !== dcui_current_language() ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || 'de' !== dcui_current_language() ) {
 		return $translated;
 	}
 
@@ -421,7 +428,12 @@ function dcura_price_note_next_to_price() {
 
 add_action( 'wp_enqueue_scripts', 'dcui_translation_assets', 20 );
 function dcui_translation_assets() {
-    if ( ! function_exists( 'is_cart' ) || ! function_exists( 'is_checkout' ) || ! function_exists( 'is_account_page' ) ) {
+    if ( ! function_exists( 'is_woocommerce' ) || ! function_exists( 'is_cart' ) || ! function_exists( 'is_checkout' ) || ! function_exists( 'is_account_page' ) ) {
+        return;
+    }
+
+    $in_woocommerce_context = is_woocommerce() || is_cart() || is_checkout() || is_account_page();
+    if ( ! $in_woocommerce_context ) {
         return;
     }
 

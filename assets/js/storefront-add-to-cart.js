@@ -14,39 +14,31 @@ jQuery(function ($) {
         document.body.style.scrollPaddingBottom = (barHeight + 24) + 'px';
     };
 
-    const getCurrencySymbol = () => {
-        const currency = window.M3Currency || {};
-        return currency.currency === 'EUR' ? '€' : 'CHF';
-    };
-
-    const getConvertedPrice = (base) => {
-        const currency = window.M3Currency;
-        if (currency && currency.currency === 'EUR' && currency.rate) {
-            return base * parseFloat(currency.rate);
-        }
-        return base;
-    };
-
     const fmt = (number) => {
         const currency = window.M3Currency || {};
+        const decimals = Number.isFinite(Number(currency.decimals)) ? Math.max(0, parseInt(currency.decimals, 10)) : 2;
         const decimalSeparator = currency.decimalSeparator || ',';
         const thousandSeparator = currency.thousandSeparator || '.';
-        const parts = Number(number || 0).toFixed(2).split('.');
+        const symbol = currency.currencySymbol || (currency.currency === 'EUR' ? '€' : 'CHF');
+        const priceFormat = currency.priceFormat || '%1$s %2$s';
+        const parts = Number(number || 0).toFixed(decimals).split('.');
         parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
-        return `${getCurrencySymbol()} ${parts.join(decimalSeparator)}`;
+        const formattedNumber = parts.join(decimalSeparator);
+
+        return priceFormat.replace('%1$s', symbol).replace('%2$s', formattedNumber);
     };
 
     const formatSaveText = (save) => saveTextTemplate.replace('%s', String(save));
 
     const renderVariationPrice = (variation) => {
         if (!variation || typeof variation.display_price === 'undefined') return;
-        const current = getConvertedPrice(parseFloat(variation.display_price));
-        const regular = getConvertedPrice(parseFloat(variation.display_regular_price));
+        const current = parseFloat(variation.display_price);
+        const regular = parseFloat(variation.display_regular_price);
         let html = '';
 
         if (regular > current && Math.abs(regular - current) > 0.01) {
             const save = Math.round(((regular - current) / regular) * 100);
-            html = `<span class="regular-price-strike">${fmt(regular)}</span><span class="amount">${fmt(current)}</span><span class="price-savings-percent" style="font-size:11px;color:#137333;margin-left:4px;">(${formatSaveText(save)})</span>`;
+            html = `<span class="regular-price-strike">${fmt(regular)}</span><span class="amount">${fmt(current)}</span><span class="price-savings-percent">(${formatSaveText(save)})</span>`;
         } else {
             html = `<span class="amount">${fmt(current)}</span>`;
         }
@@ -72,13 +64,13 @@ jQuery(function ($) {
         const width = $(window).width();
         const threshold = width <= 768 ? 400 : 250;
         if (scrollPos <= threshold) {
-            $stickyBar.removeClass('is-visible').attr('aria-hidden', 'true');
+            $stickyBar.removeClass('is-visible').attr('aria-hidden', 'true').attr('inert', '');
             return;
         }
         if (width > 768 || variationSelected) {
-            $stickyBar.addClass('is-visible').attr('aria-hidden', 'false');
+            $stickyBar.addClass('is-visible').attr('aria-hidden', 'false').removeAttr('inert');
         } else {
-            $stickyBar.removeClass('is-visible').attr('aria-hidden', 'true');
+            $stickyBar.removeClass('is-visible').attr('aria-hidden', 'true').attr('inert', '');
         }
         setScrollPadding();
     };
@@ -126,17 +118,13 @@ jQuery(function ($) {
         $select.after($wrapper).addClass('swatches-processed');
     });
 
-    $(document).on('click keydown', '.swatch-item', function (event) {
-        if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') {
-            return;
-        }
-        if (event.type === 'keydown') {
-            event.preventDefault();
-        }
+    // .swatch-item is a native button; Enter/Space already dispatch click.
+    $(document).on('click', '.swatch-item', function () {
         const $this = $(this);
         if ($this.hasClass('disabled') || $this.is(':disabled')) return;
         const $parentSelect = $this.closest('.google-swatches-wrapper').prev('select');
         const attrName = $parentSelect.attr('name');
+        if (!attrName) return;
         const newVal = $this.hasClass('selected') ? '' : $this.attr('data-value');
         $(`select[name="${attrName}"]`).val(newVal).trigger('change');
         refreshSwatches();
@@ -153,6 +141,8 @@ jQuery(function ($) {
         if ($(window).width() <= 768) variationSelected = false;
         toggleStickyVisibility();
     });
+
+    document.documentElement.classList.add('dcui-js');
 
     $(window).on('scroll resize', toggleStickyVisibility);
     refreshSwatches();

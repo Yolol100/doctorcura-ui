@@ -29,6 +29,7 @@ final class MedicalAccordionHandler
         add_action('woocommerce_admin_process_product_object', [$this, 'save_medical_data']);
         add_shortcode('medical_accordion', [$this, 'render_accordion']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
     }
 
     private static function frontend_label(string $key): string
@@ -93,7 +94,7 @@ final class MedicalAccordionHandler
                 $title_val = get_post_meta($post->ID, $title_key, true);
                 $translated_label = __($label, 'doctorcura-ui');
                 ?>
-                <div class="options_group" style="padding:15px;border-bottom:1px solid #eee;">
+                <div class="options_group dcui-medical-options-group">
                     <?php
                     woocommerce_wp_text_input([
                         'id'          => $title_key,
@@ -103,8 +104,8 @@ final class MedicalAccordionHandler
                         'desc_tip'    => true,
                     ]);
                     ?>
-                    <div style="margin:10px 161px;">
-                        <label style="display:block;margin-bottom:5px;font-weight:bold;">
+                    <div class="dcui-medical-editor-field">
+                        <label class="dcui-medical-editor-label">
                             <?php echo esc_html($translated_label); ?>
                         </label>
                         <?php
@@ -128,20 +129,47 @@ final class MedicalAccordionHandler
 
     public function save_medical_data(WC_Product $product): void
     {
-        if (!isset($_POST['wa_medical_nonce']) || !wp_verify_nonce(wp_unslash($_POST['wa_medical_nonce']), 'wa_medical_save')) {
+        if ( ! current_user_can( 'edit_post', $product->get_id() ) ) {
+            return;
+        }
+
+        $nonce = isset( $_POST['wa_medical_nonce'] ) && is_string( $_POST['wa_medical_nonce'] )
+            ? sanitize_text_field( wp_unslash( $_POST['wa_medical_nonce'] ) )
+            : '';
+
+        if ( '' === $nonce || ! wp_verify_nonce( $nonce, 'wa_medical_save' ) ) {
             return;
         }
 
         foreach (self::META_FIELDS as $key => $_label) {
-            if (isset($_POST[$key])) {
-                $product->update_meta_data($key, wp_kses_post(wp_unslash($_POST[$key])));
+            if ( isset( $_POST[ $key ] ) && is_string( $_POST[ $key ] ) ) {
+                $product->update_meta_data( $key, wp_kses_post( wp_unslash( $_POST[ $key ] ) ) );
             }
 
             $title_key = $key . '_title';
-            if (isset($_POST[$title_key])) {
-                $product->update_meta_data($title_key, sanitize_text_field(wp_unslash($_POST[$title_key])));
+            if ( isset( $_POST[ $title_key ] ) && is_string( $_POST[ $title_key ] ) ) {
+                $product->update_meta_data( $title_key, sanitize_text_field( wp_unslash( $_POST[ $title_key ] ) ) );
             }
         }
+    }
+
+    public function enqueue_admin_assets(): void
+    {
+        if (!function_exists('get_current_screen')) {
+            return;
+        }
+
+        $screen = get_current_screen();
+        if (!$screen || 'product' !== $screen->post_type) {
+            return;
+        }
+
+        wp_enqueue_style(
+            'dcui-medical-accordion-admin',
+            DCUI_URL . 'assets/css/medical-accordion-admin.css',
+            [],
+            DCUI_VERSION
+        );
     }
 
     public function enqueue_assets(): void
@@ -222,15 +250,17 @@ final class MedicalAccordionHandler
 
             <div class="wa-google-accordion">
                 <?php foreach ($items as $item) :
-                    $panel_id = 'panel-' . esc_attr($item['id']); ?>
-                    <div class="wa-acc-row" id="acc-<?php echo esc_attr($item['id']); ?>">
-                        <button type="button" class="wa-acc-trigger" aria-expanded="false" aria-controls="<?php echo esc_attr($panel_id); ?>">
+                    $item_id    = sanitize_html_class((string) $item['id']);
+                    $panel_id   = 'dcui-panel-' . $item_id;
+                    $trigger_id = 'dcui-trigger-' . $item_id; ?>
+                    <div class="wa-acc-row" id="acc-<?php echo esc_attr($item_id); ?>">
+                        <button id="<?php echo esc_attr($trigger_id); ?>" type="button" class="wa-acc-trigger" aria-expanded="false" aria-controls="<?php echo esc_attr($panel_id); ?>">
                             <span class="wa-acc-label"><?php echo esc_html($item['title']); ?></span>
                             <span class="wa-acc-chevron" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </span>
                         </button>
-                        <div class="wa-acc-panel" id="<?php echo esc_attr($panel_id); ?>" hidden>
+                        <div class="wa-acc-panel" id="<?php echo esc_attr($panel_id); ?>" role="region" aria-labelledby="<?php echo esc_attr($trigger_id); ?>" hidden>
                             <div class="wa-acc-body"><?php echo wp_kses_post($item['content']); ?></div>
                         </div>
                     </div>
