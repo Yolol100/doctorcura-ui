@@ -3,7 +3,7 @@ Contributors: openai
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: woocommerce, storefront, ui, accessibility
@@ -20,6 +20,10 @@ DoctorCura UI bundelt:
 - pricing en archive UI
 
 == Changelog ==
+= 1.2.5 =
+* Currency switcher wordt pas geladen nadat WooCommerce beschikbaar is
+* Voorkomt dat [currency_switcher] als platte tekst zichtbaar blijft door verkeerde plugin-laadvolgorde
+
 = 1.2.4 =
 * Duitse storefront-overrides beperkt tot de Duitse locale
 * Engelse en Franse product-, prijs-, currency- en accessibilitylabels toegevoegd

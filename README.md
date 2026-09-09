@@ -31,8 +31,8 @@ De plugins hebben afzonderlijke versies en releasepakketten. UI heeft geen harde
 | --- | --- |
 | WordPress | 6.4 of nieuwer; getest tot 6.8 |
 | PHP | 8.1 of nieuwer |
-| Huidige versie | 1.2.4 |
-| Combinatie | Test UI 1.2.4 samen met Core 1.0.5 op staging voordat beide naar productie gaan |
+| Huidige versie | 1.2.5 |
+| Combinatie | Test UI 1.2.5 samen met Core 1.0.5 op staging voordat beide naar productie gaan |
 
 ## Installatie
 
