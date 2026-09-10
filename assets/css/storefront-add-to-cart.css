@@ -75,6 +75,19 @@ button.swatch-item {
     color: #ffffff !important;
 }
 
+.swatch-item.selected::after,
+.swatch-item[aria-pressed="true"]::after {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    vertical-align: -1px;
+    background:
+        linear-gradient(45deg, transparent 43%, #ffffff 43%, #ffffff 57%, transparent 57%),
+        linear-gradient(-45deg, transparent 43%, #ffffff 43%, #ffffff 57%, transparent 57%);
+}
+
 .swatch-item.disabled,
 .swatch-item[disabled] {
     opacity: 0.4 !important;

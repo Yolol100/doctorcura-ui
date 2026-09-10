@@ -4,7 +4,7 @@ Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
 Requires Plugins: woocommerce
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: woocommerce, storefront, ui, accessibility
@@ -21,6 +21,11 @@ DoctorCura UI bundelt:
 - pricing en archive UI
 
 == Changelog ==
+= 1.3.3 =
+* Geselecteerde variatieknoppen tonen een duidelijk wit kruisje rechts naast de keuze
+* Geselecteerde opties blijven met één klik deselecteerbaar, ook wanneer WooCommerce andere combinaties uitschakelt
+* Pluginversie verhoogd zodat de aangepaste CSS en JavaScript direct cache-bustend worden geladen
+
 = 1.3.2 =
 * Herstelt de volledige gevalideerde 1.3.1-codebasis na een onbedoelde downgrade
 * Login- en lost-passwordvelden gebruiken e-mailgerichte labels in DE/EN/FR

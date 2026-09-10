@@ -87,8 +87,8 @@ jQuery(function ($) {
                     const $item = $(this);
                     const val = $item.attr('data-value');
                     const $opt = $select.find(`option[value="${val}"]`);
-                    const disabled = $opt.length === 0 || $opt.is(':disabled');
                     const selected = val === currentVal;
+                    const disabled = !selected && ($opt.length === 0 || $opt.is(':disabled'));
                     $item.toggleClass('selected', selected);
                     $item.toggleClass('disabled', disabled);
                     $item.prop('disabled', disabled);
