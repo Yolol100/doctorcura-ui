@@ -31,14 +31,15 @@ DoctorCura UI vereist WooCommerce, maar heeft geen harde runtimeafhankelijkheid 
 | WordPress | 6.4 of nieuwer; getest tot 6.8 |
 | PHP | 8.1 of nieuwer |
 | WooCommerce | vereist |
-| Huidige versie | 1.3.3 |
-| Combinatie | Test UI 1.3.3 samen met Core 1.0.6 op staging voordat beide naar productie gaan |
+| Huidige versie | 1.3.4 |
+| Combinatie | Test UI 1.3.4 samen met Core 1.0.6 op staging voordat beide naar productie gaan |
 
-## Belangrijk in 1.3.3
+## Belangrijk in 1.3.4
 
-- Geselecteerde variatieknoppen tonen nu een duidelijk wit kruisje rechts naast de tekst, zodat zichtbaar is dat de keuze kan worden verwijderd.
-- Een geselecteerde variatie blijft met één klik deselecteerbaar, ook wanneer WooCommerce door een andere keuze combinaties uitschakelt.
-- De pluginversie is verhoogd zodat browsers de bijgewerkte CSS en JavaScript direct opnieuw laden.
+- Het witte deselectiekruisje naast een geselecteerde variatie gebruikt nu dezelfde visuele schaal als de knoptekst.
+- Het teken is subtieler door normale lijndikte, kleinere tussenruimte en iets lagere visuele nadruk.
+- Een geselecteerde variatie blijft met één klik deselecteerbaar, ook wanneer WooCommerce andere combinaties uitschakelt.
+- De pluginversie is verhoogd zodat browsers de aangepaste CSS direct opnieuw laden.
 - De volledige 1.3.1-codebasis is hersteld; de onbedoelde downgrade naar 1.2.6 is teruggedraaid.
 - De currency switcher gebruikt weer de server-side WooCommerce-conversie en wordt pas geladen nadat WooCommerce beschikbaar is.
 - Login- en lost-passwordlabels zijn e-mailgericht in Duits, Engels en Frans.
