@@ -2,7 +2,7 @@
 /**
  * Plugin Name: DoctorCura UI
  * Description: DoctorCura storefront UI modules, product content, category grids, swatches, currency switching, sliders, pricing, and translation overrides.
- * Version: 1.3.4
+ * Version: 1.3.6
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Requires Plugins: woocommerce
@@ -96,7 +96,7 @@ if ( ! defined( 'DCUI_URL' ) ) {
     define( 'DCUI_URL', $dcui_this_url );
 }
 if ( ! defined( 'DCUI_VERSION' ) ) {
-    define( 'DCUI_VERSION', '1.3.4' );
+    define( 'DCUI_VERSION', '1.3.6' );
 }
 
 add_action( 'init', static function (): void {
