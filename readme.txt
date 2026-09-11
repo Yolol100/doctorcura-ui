@@ -4,7 +4,7 @@ Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
 Requires Plugins: woocommerce
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: woocommerce, storefront, ui, accessibility
@@ -21,6 +21,10 @@ DoctorCura UI bundelt:
 - pricing en archive UI
 
 == Changelog ==
+= 1.3.4 =
+* Verkleint het witte deselectiekruisje naar dezelfde visuele schaal als de knoptekst
+* Gebruikt een subtieler teken met normale lijndikte en kleinere tussenruimte
+
 = 1.3.3 =
 * Geselecteerde variatieknoppen tonen een duidelijk wit kruisje rechts naast de keuze
 * Geselecteerde opties blijven met één klik deselecteerbaar, ook wanneer WooCommerce andere combinaties uitschakelt
