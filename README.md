@@ -2,14 +2,16 @@
 
 > **Portfoliostatus:** Experiment · zelfstandige WordPress/WooCommerce-presentatieplugin
 
-DoctorCura UI bevat storefront-, product- en interfacecomponenten voor DoctorCura. De plugin blijft een afzonderlijk pakket van [DoctorCura Core](https://github.com/Yolol100/doctorcura-core), zodat presentatie en domeinlogica onafhankelijk kunnen worden getest, geactiveerd en teruggedraaid.
+DoctorCura UI bevat de storefront-, product- en interfacecomponenten voor DoctorCura. De plugin blijft bewust gescheiden van [DoctorCura Core](https://github.com/Yolol100/doctorcura-core), zodat presentatie en domeinlogica onafhankelijk kunnen worden geactiveerd, getest en teruggedraaid.
 
 ## Verantwoordelijkheid
 
-- één centraal category-grid-systeem met de shortcodes `[wa_category_grid]` en de backwards-compatible alias `[alle_categorieen]`;
-- medical accordion;
+DoctorCura UI bundelt onder meer:
+
+- één category-grid-systeem met `[wa_category_grid]` en de backwards-compatible alias `[alle_categorieen]`;
+- medical accordion-weergave;
 - productvariatie- en add-to-cart-interface;
-- server-side CHF/EUR currency switching voor WooCommerce-prijzen, checkout/ordervaluta, shipping en vaste coupons;
+- server-side CHF/EUR currency switching voor WooCommerce-prijzen en relevante checkout/ordercontext;
 - prijs-, vertaal- en accessibilitylabels;
 - storefrontafbeeldingen en sliders;
 - gecontroleerde account-notificatiefilters.
@@ -17,56 +19,55 @@ DoctorCura UI bevat storefront-, product- en interfacecomponenten voor DoctorCur
 ## Relatie met DoctorCura Core
 
 ```text
-DoctorCura Core → primaire account-, checkout- en orderflows
-DoctorCura UI   → storefront/productpresentatie + huidige account-notificatiefilters
+DoctorCura Core → account-, checkout-, order- en aanvraaggedrag
+DoctorCura UI   → storefront-, product- en presentatielaag
 WordPress + WooCommerce → gedeeld runtimeplatform
 ```
 
-DoctorCura UI vereist WooCommerce, maar heeft geen harde runtimeafhankelijkheid van DoctorCura Core. Core en UI hebben afzonderlijke versies en releasepakketten. Test de gebruikte combinatie altijd op staging voordat productie wordt bijgewerkt.
+DoctorCura UI vereist WooCommerce, maar heeft geen harde runtimeafhankelijkheid van DoctorCura Core. De twee plugins hebben afzonderlijke versies en releasepakketten. Test daarom altijd de daadwerkelijk gebruikte Core/UI-combinatie op staging in plaats van één vaste cross-version-combinatie aan te nemen.
 
 ## Compatibiliteit
 
-| Onderdeel | Ondersteuning |
-| --- | --- |
-| WordPress | 6.4 of nieuwer; getest tot 6.8 |
-| PHP | 8.1 of nieuwer |
-| WooCommerce | vereist |
-| Huidige versie | 1.3.6 |
-| Combinatie | Test UI 1.3.6 samen met Core 1.0.6 op staging voordat beide naar productie gaan |
+- WordPress 6.4 of nieuwer.
+- PHP 8.1 of nieuwer.
+- WooCommerce is vereist.
+- Huidige pluginversie: `1.3.6`.
+- `readme.txt` is leidend voor de actuele stable tag en releasegeschiedenis.
 
-## Belangrijk in 1.3.6
+## Huidige functionaliteit
 
-- Het witte deselectiekruisje naast een geselecteerde variatie is nu exact 9 × 9 pixels.
-- Het kruis wordt opgebouwd uit twee subtiele CSS-diagonalen, met 8px ruimte naast de tekst en 1px verticale uitlijning.
-- Een geselecteerde variatie blijft met één klik deselecteerbaar, ook wanneer WooCommerce andere combinaties uitschakelt.
-- De pluginversie is verhoogd zodat browsers de aangepaste CSS direct opnieuw laden.
-- De volledige 1.3.1-codebasis is hersteld; de onbedoelde downgrade naar 1.2.6 is teruggedraaid.
-- De currency switcher gebruikt weer de server-side WooCommerce-conversie en wordt pas geladen nadat WooCommerce beschikbaar is.
-- Login- en lost-passwordlabels zijn e-mailgericht in Duits, Engels en Frans.
-- Publieke lost-passwordmeldingen zijn neutraal en bevestigen niet of een e-mailadres aan een account gekoppeld is.
-- De bootstrap laadt WooCommerce-afhankelijke modules pas nadat WooCommerce beschikbaar is.
-- Legacy Code Snippet/pluginconflicten veroorzaken niet langer stille module-uitval: elke conflictmodule wordt gelogd en zichtbaar gemeld in wp-admin.
-- De locale helpers kunnen gedeeltelijk gemigreerde oude snippets opvangen zonder `undefined function`-fatals.
-- De twee parallelle category grids zijn samengevoegd tot één renderer en één set assets.
-- Account-notificatiefilters respecteren de WordPress filter-contracten.
-- Vertaaldata wordt per request gecachet en niet op iedere `gettext`-aanroep opnieuw opgebouwd.
-- Uninstall ruimt de wisselkoers, cron en plugin-eigen category-meta op.
-- Dubbele actieve pluginmappen worden vóór symboolregistratie gedetecteerd, ook wanneer de nieuwe versie vóór een oude onbeschermde kopie laadt.
-- Currency conversion is afgeschermd van wp-admin en niet-Store-API REST-verkeer; shipping caches krijgen valuta/rate-context en WooCommerce-prijspagina’s worden niet als gedeelde full-page cache opgebouwd.
-- De custom variation UI gebruikt server-side geconverteerde waarden zonder dubbele JS-conversie en behoudt WooCommerce-prijsnotatie.
-- Native button-keyboardgedrag wordt niet meer dubbel afgehandeld; zonder JavaScript blijven de native WooCommerce-variatiecontrols bruikbaar.
+De huidige runtime bevat onder meer:
+
+- server-side WooCommerce-valutaconversie in plaats van alleen cosmetische browserconversie;
+- veilige bootstrap van WooCommerce-afhankelijke modules;
+- detectie en melding van conflicterende oude DoctorCura UI-kopieën of gemigreerde snippets;
+- één geconsolideerde category-grid-renderer;
+- per-request gecachete vertaaldata;
+- variatiecontrols die ook zonder JavaScript terugvallen op de native WooCommerce-controls;
+- toegankelijke accordion-/swatchinteractie zonder dubbele keyboardtoggles;
+- uninstall-cleanup voor plugin-eigen wisselkoers-, cron-, transient- en category-meta-data.
+
+Versie `1.3.6` verfijnt daarnaast de deselectie-indicator in de variatie-interface. Zie `readme.txt` voor de volledige changelog.
 
 ## Installatie
 
 1. Zorg dat WooCommerce actief is.
-2. Upload de pluginmap naar `/wp-content/plugins/`.
-3. Activeer DoctorCura UI.
-4. Controleer WooCommerce-archieven, productpagina's, CHF/EUR checkout, vertalingen en keyboardgedrag op staging.
-5. Verwijder oude DoctorCura UI Code Snippets of dubbele pluginmappen als de plugin in wp-admin een legacy-codeconflict meldt.
+2. Upload de pluginmap naar `wp-content/plugins/`.
+3. Activeer **DoctorCura UI**.
+4. Controleer WooCommerce-archieven, productpagina's, variaties, CHF/EUR-prijzen, checkout/ordervaluta en vertalingen op staging.
+5. Verwijder oude DoctorCura UI-snippets of dubbele pluginmappen als de plugin een legacy-conflict meldt.
 
-## Releasegrens
+## Veiligheid en QA
 
-Een nieuwe release vereist minimaal PHP- en JavaScript-syntaxcontrole plus stagingtests van storefront, productvariaties, valuta, checkout/ordervaluta, vertalingen, legacy-conflicten en deactivatie/uninstall-cleanup. Plaats geen account-, order- of medische gegevens in publieke issues.
+Controleer bij updates minimaal storefrontweergave, productvariaties, valuta, checkout/ordervaluta, vertalingen, keyboardbediening, conflictmeldingen en deactivatie/uninstallgedrag. Plaats geen account-, order- of medische gegevens in publieke issues of testartifacts.
+
+## Repository structure
+
+- `doctorcura-ui.php` — pluginbootstrap en runtime-metadata.
+- `includes/` — storefront-, WooCommerce-, currency-, translation- en UI-logica.
+- `assets/` — frontend/admin assets.
+- `uninstall.php` — plugin-cleanup.
+- `readme.txt` — WordPress-format release-informatie en changelog.
 
 ## Licentie
 
